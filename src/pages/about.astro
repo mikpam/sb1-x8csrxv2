@@ -1,0 +1,249 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Users, Target, Award, Rocket, Terminal, Linkedin, Facebook, Github, Calendar } from 'lucide-react';
+
+const teamMembers = [
+  {
+    name: "William Zhai",
+    role: "CEO & Founder",
+    socials: {
+      linkedin: "https://linkedin.com/in/williamzhai",
+      facebook: "https://facebook.com/williamzhai",
+      github: "https://github.com/williamzhai",
+      calendly: "https://calendly.com/williamzhai"
+    }
+  },
+  {
+    name: "Michael Pam",
+    role: "CTO & Founder",
+    socials: {
+      linkedin: "https://linkedin.com/in/michaelpam",
+      facebook: "https://facebook.com/michaelpam",
+      github: "https://github.com/michaelpam",
+      calendly: "https://calendly.com/michaelpam"
+    }
+  }
+];
+
+const values = [
+  {
+    icon: Target,
+    title: "Innovation",
+    description: "Pushing boundaries in AI and automation"
+  },
+  {
+    icon: Users,
+    title: "Customer Focus",
+    description: "Building solutions that matter to you"
+  },
+  {
+    icon: Award,
+    title: "Excellence",
+    description: "Committed to the highest quality standards"
+  },
+  {
+    icon: Rocket,
+    title: "Growth",
+    description: "Continuous learning and improvement"
+  }
+];
+
+// Binary matrix animation script
+const matrixScript = `
+  <script>
+    function createMatrixAnimation(canvas) {
+      const ctx = canvas.getContext('2d');
+      const chars = '01';
+      const fontSize = 10;
+      const columns = canvas.width / fontSize;
+      const drops = Array(Math.floor(columns)).fill(1);
+      
+      ctx.font = fontSize + 'px monospace';
+      
+      function draw() {
+        ctx.fillStyle = 'rgba(20, 21, 23, 0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#FF9966';
+        drops.forEach((y, i) => {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          const x = i * fontSize;
+          ctx.fillText(char, x, y * fontSize);
+          
+          if (y * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        });
+      }
+      
+      return setInterval(draw, 50);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvases = document.querySelectorAll('.matrix-canvas');
+      canvases.forEach(canvas => {
+        const container = canvas.parentElement;
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+        createMatrixAnimation(canvas);
+      });
+    });
+  </script>
+`;
+---
+
+<Layout title="About Us - AdaptiveParse">
+  <main class="pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* About Us Section */}
+      <div class="max-w-4xl mx-auto mb-20">
+        <h1 class="text-5xl font-display font-bold text-white mb-12 text-center">
+          About Us
+        </h1>
+        
+        <div class="prose prose-lg prose-invert mx-auto space-y-6 text-gray-300">
+          <p>
+            AdaptiveParse was founded by William Zhai and Michael Pam, two visionaries who combined their unique strengths to create a cutting-edge data solutions company.
+          </p>
+
+          <p>
+            William Zhai brings a deep understanding of how business processes work and what they need to thrive in competitive markets. His strategic insight ensures that AdaptiveParse solutions are not only innovative but also tailored to solve real-world business challenges.
+          </p>
+
+          <p>
+            Michael Pam, equipped with a full development-stacked arsenal, excels at tackling emerging technologies. With expertise spanning development frameworks and GPU-based machine learning, he has a relentless drive to push the boundaries of what's possible. Together, their complementary skills make them a formidable leadership team, combining strategic foresight with technical prowess.
+          </p>
+
+          <p>
+            Our journey began in a marketing agency where we built high-performing websites and honed SEO strategies grounded in the principles of information retrieval. Inspired by landmark advancements such as the 2016 TensorFlow paper and the 2017 transformer model, we delved into machine learning, natural language processing, and vision-based applications.
+          </p>
+
+          <p>
+            At AdaptiveParse, we design modular systems that are flexible, scalable, and built to evolve with the needs of our clients. We are particularly excited about the future, as true agentic models—capable of dynamic decision-making and autonomous operation—become more widely available. These advancements promise to unlock unprecedented levels of efficiency and innovation, and we can't wait to help our clients harness their full potential.
+          </p>
+
+          <p>
+            With a relentless focus on innovation and practicality, we empower organizations to adapt and thrive in a rapidly evolving digital landscape. At AdaptiveParse, we don't just follow trends—we create them, turning challenges into opportunities and data into actionable insights.
+          </p>
+        </div>
+      </div>
+      
+      {/* Team Section */}
+      <div class="pb-20">
+        <h2 class="text-3xl font-display font-bold text-white mb-12 text-center">Leadership Team</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {teamMembers.map(member => (
+            <div class="relative bg-dark-100/50 rounded-lg overflow-hidden border-2 border-brand-orange/30">
+              {/* Terminal Header */}
+              <div class="bg-dark-300 px-4 py-2 flex items-center justify-between border-b-2 border-brand-orange/30">
+                <div class="flex items-center space-x-2">
+                  <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="flex items-center text-brand-orange">
+                  <Terminal className="w-4 h-4 mr-2" />
+                  <span class="text-xs font-mono">{member.role}</span>
+                </div>
+              </div>
+
+              {/* Matrix Animation Container */}
+              <div class="relative h-64 overflow-hidden">
+                <canvas class="matrix-canvas absolute inset-0"></canvas>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-dark-100/90"></div>
+              </div>
+
+              {/* Terminal Footer */}
+              <div class="bg-dark-300 p-4 border-t-2 border-brand-orange/30">
+                <div class="font-mono">
+                  <span class="text-brand-orange">#!</span>
+                  <span class="text-white font-semibold"> {member.name}</span>
+                </div>
+                <div class="text-xs text-gray-400 mt-1 font-mono">
+                  <span class="text-brand-orange">></span> {member.role}
+                </div>
+                {/* Social Links and Calendly Button Container */}
+                <div class="mt-3 flex justify-between items-start">
+                  {/* Social Links */}
+                  <div class="space-y-1 font-mono text-xs">
+                    <a 
+                      href={member.socials.linkedin} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="group flex items-center text-gray-400 hover:text-brand-orange transition-colors"
+                    >
+                      <span class="text-brand-orange inline-block w-4 animate-pulse">#!</span>
+                      <span class="group-hover:translate-x-1 transition-transform duration-200"> connect</span>
+                      <Linkedin className="w-3.5 h-3.5 ml-2 group-hover:scale-110 transition-transform duration-200" />
+                    </a>
+                    <a 
+                      href={member.socials.facebook} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="group flex items-center text-gray-400 hover:text-brand-orange transition-colors"
+                    >
+                      <span class="text-brand-orange inline-block w-4 animate-pulse">#!</span>
+                      <span class="group-hover:translate-x-1 transition-transform duration-200"> follow</span>
+                      <Facebook className="w-3.5 h-3.5 ml-2 group-hover:scale-110 transition-transform duration-200" />
+                    </a>
+                    <a 
+                      href={member.socials.github} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="group flex items-center text-gray-400 hover:text-brand-orange transition-colors"
+                    >
+                      <span class="text-brand-orange inline-block w-4 animate-pulse">#!</span>
+                      <span class="group-hover:translate-x-1 transition-transform duration-200"> git clone</span>
+                      <Github className="w-3.5 h-3.5 ml-2 group-hover:scale-110 transition-transform duration-200" />
+                    </a>
+                  </div>
+
+                  {/* Enhanced Calendly Button */}
+                  <a
+                    href={member.socials.calendly}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group flex flex-col items-center"
+                  >
+                    <div class="font-mono text-[10px] text-brand-orange mb-1 animate-pulse">
+                      <span class="relative">
+                        press
+                        <div class="absolute inset-0 blur-sm bg-brand-orange/30"></div>
+                      </span>
+                    </div>
+                    <div class="relative flex items-center justify-center bg-dark-200 border-2 border-brand-orange/30 rounded-lg px-3 py-2 min-w-[100px] group-hover:border-brand-orange transition-all duration-200 shadow-[0_0_15px_rgba(255,153,102,0.2)] group-hover:shadow-[0_0_20px_rgba(255,153,102,0.4)]">
+                      <Calendar className="w-3.5 h-3.5 text-brand-orange mr-2" />
+                      <span class="font-mono text-xs text-brand-orange relative">
+                        Meet
+                        <div class="absolute inset-0 blur-md bg-brand-orange/20 group-hover:bg-brand-orange/30 transition-colors duration-200"></div>
+                      </span>
+                      <div class="absolute -right-1 -bottom-1 w-4 h-4 border-r-2 border-b-2 border-brand-orange/30 group-hover:border-brand-orange transition-all duration-200"></div>
+                      {/* Additional glow effect */}
+                      <div class="absolute inset-0 rounded-lg opacity-50 group-hover:opacity-100 transition-opacity duration-200"
+                        style={{
+                          boxShadow: "inset 0 0 20px rgba(255, 153, 102, 0.3)",
+                        }}
+                      ></div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              {/* Terminal Glows */}
+              <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-orange/5 to-transparent"></div>
+                <div class="absolute inset-0 opacity-50" style={{
+                  boxShadow: "inset 0 0 30px rgba(255, 153, 102, 0.1)",
+                }}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {/* Inject Matrix Animation Script */}
+  <Fragment set:html={matrixScript} />
+</Layout>

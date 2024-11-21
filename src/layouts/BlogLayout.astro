@@ -1,0 +1,175 @@
+---
+import { Calendar, Clock, User, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
+import Navbar from '../components/Navbar';
+import SEOTags from '../components/SEOTags.astro';
+
+const { frontmatter } = Astro.props;
+
+// Format date
+const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <SEOTags
+      title={frontmatter.title}
+      description={frontmatter.excerpt}
+      image={frontmatter.image}
+      canonicalURL={canonicalURL}
+      type="article"
+      article={{
+        publishedTime: frontmatter.date,
+        authors: [frontmatter.author],
+        tags: ["Data Integration", "ETL", "Best Practices"]
+      }}
+    />
+  </head>
+  <body class="bg-gray-50">
+    <Navbar client:load />
+    
+    <main class="pt-20">
+      {/* Hero Section with 20% original height */}
+      <div class="relative w-full max-w-3xl mx-auto mb-8">
+        <div class="h-[200px] overflow-hidden rounded-lg">
+          <img 
+            src={frontmatter.image} 
+            alt={frontmatter.title}
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-gray-900/40"></div>
+        </div>
+        
+        <div class="absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6">
+          <span class="inline-block bg-brand-orange/90 text-white text-sm px-3 py-1 rounded-full mb-2">
+            {frontmatter.category}
+          </span>
+          
+          <h1 class="text-2xl sm:text-3xl font-display font-bold text-white">
+            {frontmatter.title}
+          </h1>
+        </div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Main Content */}
+          <div class="lg:col-span-8 lg:col-start-3">
+            {/* Author Info */}
+            <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-8">
+              <div class="flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center gap-4">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(frontmatter.author)}&background=FF9966&color=fff`}
+                    alt={frontmatter.author}
+                    class="w-12 h-12 rounded-full"
+                  />
+                  <div>
+                    <h3 class="font-display font-semibold text-gray-900">{frontmatter.author}</h3>
+                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                      <span class="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {formattedDate}
+                      </span>
+                      <span class="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {frontmatter.readTime}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Share Buttons */}
+                <div class="flex items-center gap-2">
+                  <button class="p-2 text-gray-600 hover:text-brand-orange transition-colors">
+                    <Facebook className="w-5 h-5" />
+                  </button>
+                  <button class="p-2 text-gray-600 hover:text-brand-orange transition-colors">
+                    <Twitter className="w-5 h-5" />
+                  </button>
+                  <button class="p-2 text-gray-600 hover:text-brand-orange transition-colors">
+                    <Linkedin className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Article Content */}
+            <article class="prose prose-lg max-w-none bg-white rounded-lg shadow-sm p-6 sm:p-8">
+              <slot />
+            </article>
+
+            {/* Tags */}
+            <div class="mt-8 flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">Data Integration</span>
+              <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">ETL</span>
+              <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">Best Practices</span>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <aside class="lg:col-span-3">
+            <div class="sticky top-24 space-y-8">
+              {/* Author Bio */}
+              <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="font-display font-semibold text-lg mb-4">About the Author</h3>
+                <div class="flex items-center gap-4 mb-4">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(frontmatter.author)}&background=FF9966&color=fff`}
+                    alt={frontmatter.author}
+                    class="w-16 h-16 rounded-full"
+                  />
+                  <div>
+                    <h4 class="font-display font-semibold">{frontmatter.author}</h4>
+                    <p class="text-sm text-gray-600">Technical Content Writer</p>
+                  </div>
+                </div>
+                <p class="text-gray-600 text-sm">
+                  Expert in data integration and ETL processes with over 10 years of experience in enterprise software development.
+                </p>
+              </div>
+
+              {/* Newsletter Signup */}
+              <div class="bg-gradient-to-br from-brand-orange/20 to-brand-blue/20 rounded-lg shadow-sm p-6">
+                <h3 class="font-display font-semibold text-lg mb-4">Stay Updated</h3>
+                <p class="text-sm text-gray-600 mb-4">
+                  Get the latest insights on data integration and automation.
+                </p>
+                <form class="space-y-3">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                  />
+                  <button type="submit" class="w-full btn btn-primary">
+                    Subscribe
+                  </button>
+                </form>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    {/* Back to Blog */}
+    <div class="bg-gray-50 py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <a href="/blog" class="inline-flex items-center text-gray-600 hover:text-brand-orange transition-colors">
+          <span class="mr-2">←</span>
+          Back to blog
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

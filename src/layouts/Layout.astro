@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+import Footer from '../components/Footer';
+import SEOTags from '../components/SEOTags.astro';
+import Navbar from '../components/Navbar';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+}
+
+const { title, description, image, canonicalURL } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@400;600&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <SEOTags
+      title={title}
+      description={description}
+      image={image}
+      canonicalURL={canonicalURL}
+    />
+  </head>
+  <body>
+    <div class="min-h-screen bg-dark-200">
+      <Navbar client:load />
+      <div class="pt-16">
+        <slot />
+      </div>
+      <Footer client:load />
+    </div>
+  </body>
+</html>

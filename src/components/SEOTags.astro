@@ -1,0 +1,78 @@
+---
+import { SEO } from 'astro-seo';
+import { seoConfig } from '../config/seo';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: string;
+  type?: 'website' | 'article';
+  article?: {
+    publishedTime?: string;
+    authors?: string[];
+    tags?: string[];
+  };
+}
+
+const {
+  title = seoConfig.defaultTitle,
+  description = seoConfig.defaultDescription,
+  image = seoConfig.defaultImage,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  type = 'website',
+  article,
+} = Astro.props;
+
+const formattedTitle = title === seoConfig.defaultTitle 
+  ? title 
+  : `${title} - ${seoConfig.siteName}`;
+---
+
+<SEO
+  title={formattedTitle}
+  description={description}
+  canonical={canonicalURL}
+  openGraph={{
+    basic: {
+      title: formattedTitle,
+      type,
+      image,
+      url: canonicalURL,
+    },
+    optional: {
+      description,
+      siteName: seoConfig.siteName,
+      locale: "en_US",
+    },
+    article: article && {
+      publishedTime: article.publishedTime,
+      authors: article.authors,
+      tags: article.tags,
+    },
+    image: {
+      alt: `${seoConfig.siteName} Preview Image`,
+    },
+  }}
+  twitter={{
+    creator: seoConfig.twitter.creator,
+    card: "summary_large_image",
+    site: seoConfig.twitter.site,
+    title: formattedTitle,
+    description,
+    image,
+    imageAlt: `${seoConfig.siteName} Preview Image`,
+  }}
+  extend={{
+    meta: [
+      { name: "theme-color", content: seoConfig.themeColor },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+      ...(article?.authors ? [{ name: "author", content: article.authors[0] }] : []),
+    ],
+    link: [
+      { rel: "manifest", href: "/site.webmanifest" },
+      { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: seoConfig.themeColor },
+    ],
+  }}
+/>
